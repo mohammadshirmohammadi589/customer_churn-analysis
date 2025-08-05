@@ -1,0 +1,19 @@
+The following libraries are used in this code:
+
+pandas
+
+numpy
+
+joblib
+
+matplotlib.pyplot
+
+seaborn
+
+plotly.subplots
+
+warnings
+
+sklearn
+
+catboost
