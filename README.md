@@ -143,8 +143,14 @@ The **LightGBM model** was chosen as the final model for deployment due to its h
 - **Data Imbalance**: While oversampling techniques improved recall, additional methods (e.g., cost-sensitive learning) could be explored to further balance the model's performance.
 
 
+## How to implement the project
 
 
+pip install -r requirements.txt
+
+streamlit run app.py
+
+jupyter notebook EDA_and_Modelling.ipynb
 
 
 
