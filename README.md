@@ -146,10 +146,11 @@ The **LightGBM model** was chosen as the final model for deployment due to its h
 ## How to implement the project
 
 
-pip install -r requirements.txt
-streamlit run app.py
-# اجرای نوت‌بوک در محیط Jupyter
-jupyter notebook EDA_and_Modelling.ipynb
+### pip install -r requirements.txt
+
+### streamlit run app.py
+## اجرای نوت‌بوک در محیط Jupyter
+### jupyter notebook EDA_and_Modelling.ipynb
 
 
 
