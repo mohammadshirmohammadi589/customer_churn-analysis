@@ -10,6 +10,45 @@ import io
 import time
 import matplotlib.pyplot as plt
 
+# 🔐 بخش احراز هویت - اضافه کردن در اینجا
+if 'authenticated' not in st.session_state:
+    st.session_state.authenticated = False
+
+if not st.session_state.authenticated:
+    st.title("🔐 ورود به سیستم پیش‌بینی ریزش مشتری")
+    password = st.text_input("لطفاً رمز عبور را وارد کنید:", type="password")
+    
+    if st.button("ورود"):
+        if password == "password123":  # رمز دلخواه خود را اینجا قرار دهید
+            st.session_state.authenticated = True
+            st.success("✅ ورود موفقیت‌آمیز بود!")
+            st.rerun()
+        else:
+            st.error("❌ رمز عبور نادرست است")
+    st.stop()
+
+# 🔒 محدودیت نسخه دمو - اضافه کردن این بخش
+if st.secrets.get("DEMO_VERSION", "true") == "true":
+    st.warning("""
+    🔒 این نسخه دمو است - برای نسخه کامل خریداری کنید
+    ⚠️ این نسخه فقط با داده‌های نمونه کار می‌کند
+    💰 برای نسخه کامل با داده‌های خودتان: 20 دلار
+    📧 برای خرید: your_email@example.com
+    """)
+    
+    # محدود کردن تعداد پیش‌بینی‌ها
+    if 'prediction_count' not in st.session_state:
+        st.session_state.prediction_count = 0
+    
+    if st.session_state.prediction_count >= 3:
+        st.error("""
+        ❌ شما فقط ۳ پیش‌بینی رایگان دارید
+        💰 برای پیش‌بینی نامحدود: نسخه کامل بخرید
+        """)
+        st.stop()
+
+
+
 # تنظیمات صفحه
 st.set_page_config(page_title="پیش‌بینی ریزش مشتری", layout="wide", page_icon="📊")
 
