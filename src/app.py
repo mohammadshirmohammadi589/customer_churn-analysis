@@ -92,7 +92,7 @@ def predict(input_df, model):
     except Exception as e:
         st.error(f"❌ Prediction error: {str(e)}")
         return None
-<<<<<<< HEAD
+
 
 # Single customer prediction section
 if menu == "Prediction" and model is not None:
@@ -296,7 +296,6 @@ if model is None:
     st.warning("⚠️ Model not loaded. Please check if the model file exists.")
 
     
-=======
 
 # Single customer prediction section
 if menu == "Prediction" and model is not None:
@@ -499,4 +498,4 @@ elif menu == "Upload Data":
 if model is None:
     st.warning("⚠️ Model not loaded. Please check if the model file exists.")
 
->>>>>>> 26f31b5f8510167382766b4c8c2d7502f7987d8b
+
