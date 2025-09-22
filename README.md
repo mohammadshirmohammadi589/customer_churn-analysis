@@ -1,6 +1,6 @@
 #  Customer Churn Prediction
 
-This project builds a machine learning model to predict customer churn for company. The goal is to improve customer retention by identifying high-risk customers and implementing targeted retention strategies.
+Customer churn is one of the biggest challenges for businesses, leading to significant financial lossesThe goal of this project is to build a machine learning model that, using existing data, identifies customers who are on the verge of churn with high accuracy.
 
 ## Project Overview
 
@@ -143,7 +143,16 @@ The **LightGBM model** was chosen as the final model for deployment due to its h
 - **Data Imbalance**: While oversampling techniques improved recall, additional methods (e.g., cost-sensitive learning) could be explored to further balance the model's performance.
 
 
+## How to implement the project
 
+
+### pip install -r requirements.txt
+
+### streamlit run app.py
+
+## Running a notebook in the Jupyter environment
+
+### jupyter notebook EDA_and_Modelling.ipynb
 
 
 

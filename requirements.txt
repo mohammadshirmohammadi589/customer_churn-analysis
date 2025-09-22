@@ -1,19 +1,8 @@
-The following libraries are used in this code:
-
 pandas
-
 numpy
-
 joblib
-
-matplotlib.pyplot
-
+matplotlib
 seaborn
-
-plotly.subplots
-
-warnings
-
-sklearn
-
+plotly
+scikit-learn
 catboost
