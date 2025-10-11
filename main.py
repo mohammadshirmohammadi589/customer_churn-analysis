@@ -13,8 +13,7 @@ warnings.filterwarnings('ignore')  # برای جلوگیری از warningهای 
 
 # 🔐 Credentials
 CREDENTIALS = {
-    'user1': 'password123',
-    'user3': 'securepass45133'
+    'ali': 'bayat'
 }
 USERS_FILE = 'users_usage.json'
 
@@ -276,4 +275,5 @@ elif menu == "آپلود":
     if uploaded_file:
         df_up = pd.read_csv(uploaded_file)
         st.write("داده‌ها:", df_up.head())
+
         # predict batch اگر خواستی اضافه کن
