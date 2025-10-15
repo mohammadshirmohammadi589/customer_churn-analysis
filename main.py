@@ -13,7 +13,7 @@ warnings.filterwarnings('ignore')  # برای جلوگیری از warningهای 
 
 # 🔐 Credentials
 CREDENTIALS = {
-    'ali': 'bayat'
+    'DataVisionary': 'Data$code2024!'
 }
 USERS_FILE = 'users_usage.json'
 
@@ -277,3 +277,4 @@ elif menu == "آپلود":
         st.write("داده‌ها:", df_up.head())
 
         # predict batch اگر خواستی اضافه کن
+
