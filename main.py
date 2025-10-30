@@ -45,28 +45,28 @@ if 'authenticated' not in st.session_state:
     st.session_state.username = None
 
 if not st.session_state.authenticated:
-    st.title("🔐 ورود به سیستم پیش‌بینی ریزش مشتری")
-    username = st.text_input("نام کاربری:")
-    password = st.text_input("رمز عبور:", type="password")
+    st.title("🔐 Customer churn prediction login")
+    username = st.text_input("Username:")
+    password = st.text_input("Password:", type="password")
     
-    if st.button("ورود"):
+    if st.button("Login"):
         if username in CREDENTIALS and CREDENTIALS[username] == password:
             usage_count = check_usage(username)
             if usage_count >= 3:
-                st.error("❌ شما بیش از ۳ پیش‌بینی انجام داده‌اید. دسترسی مسدود است.")
+                st.error("❌ You have made more than 3 predictions. Access is blocked.")
                 st.stop()
             st.session_state.authenticated = True
             st.session_state.username = username
-            st.success("✅ ورود موفق!")
+            st.success("✅ Successful login!")
             st.rerun()
         else:
-            st.error("❌ اطلاعات ورود اشتباه است")
+            st.error("❌ The login information is incorrect.")
     st.stop()
 
 # Demo Limitations
 DEMO_VERSION = "true"
 if DEMO_VERSION == "true":
-    st.sidebar.warning("🔒 نسخه دمو: فقط ۳ پیش‌بینی مجاز برای هر کاربر.")
+    st.sidebar.warning("🔒 Demo version: Only 3 predictions allowed per user.")
 
 # Model & Encoders Loading (فقط current_dir برای Cloud)
 def load_artifacts():
@@ -83,11 +83,11 @@ def load_artifacts():
     if os.path.exists(model_path) and os.path.exists(encoders_path):
         model = joblib.load(model_path)
         encoders = joblib.load(encoders_path)
-        st.success("✅ مدل و encoders لود شد.")
+        st.success("✅ The model and encoders were loaded.")
         return model, encoders
     else:
-        st.error(f"❌ فایل‌ها پیدا نشد: مدل={os.path.exists(model_path)}, encoders={os.path.exists(encoders_path)}")
-        st.info("فایل‌های .pkl رو از نوت‌بوک دانلود و آپلود کن.")
+        st.error(f"❌ Files not found: Model={os.path.exists(model_path)}, encoders={os.path.exists(encoders_path)}")
+        st.info("Download and upload .pkl files from Notebook.")
         return None, None
 
 model, encoders = load_artifacts()
@@ -96,9 +96,9 @@ if model is None:
     st.stop()
 
 # Sidebar
-st.sidebar.title("📋 منو")
-menu = st.sidebar.radio("انتخاب:", ["پیش‌بینی", "درباره", "تحلیل‌ها", "آپلود"])
-if st.sidebar.button("خروج"):
+st.sidebar.title("📋 Menu")
+menu = st.sidebar.radio("Choice:", ["Forecast", "About", "Analyses", "Upload"])
+if st.sidebar.button("Exit"):
     st.session_state.clear()
     st.rerun()
 
@@ -153,29 +153,29 @@ def predict(input_df, model, encoders):
         return pred, proba
 
     except Exception as e:
-        st.error(f"❌ خطا در پیش‌بینی: {e}")
+        st.error(f"❌ Error in prediction: {e}")
         st.write(f"Debug: Input columns: {input_df.columns.tolist()}")
         return None, None
 
 # Prediction Section
-if menu == "پیش‌بینی":
-    st.title("🔍 پیش‌بینی ریزش مشتری")
+if menu == "Forecast":
+    st.title("🔍Customer churn prediction")
     usage_count = check_usage(st.session_state.username)
     remaining = 3 - usage_count
-    st.info(f"تعداد پیش‌بینی باقی‌مانده: {remaining}")
+    st.info(f"Number of remaining predictions: {remaining}")
     if remaining <= 0:
-        st.error("❌ حد مجاز تمام شده. با ادمین تماس بگیرید.")
+        st.error("❌ Limit exceeded. Contact admin.")
         st.stop()
 
     col1, col2 = st.columns(2)
     with col1:
-        gender = st.selectbox("جنسیت", ["Female", "Male"])
-        SeniorCitizen = st.selectbox("سالمند؟", [0, 1])
-        Partner = st.selectbox("شریک؟", ["No", "Yes"])
-        Dependents = st.selectbox("وابستگان؟", ["No", "Yes"])
-        tenure = st.slider("مدت اشتراک (ماه)", 0, 72, 1)
-        MonthlyCharges = st.number_input("هزینه ماهانه", min_value=0.0, value=20.0)
-        TotalCharges = st.number_input("هزینه کل", min_value=0.0, value=20.0)
+        gender = st.selectbox("Gender", ["Female", "Male"])
+        SeniorCitizen = st.selectbox("Elderly؟", [0, 1])
+        Partner = st.selectbox("Partner?", ["No", "Yes"])
+        Dependents = st.selectbox("Dependents?", ["No", "Yes"])
+        tenure = st.slider("Subscription period (months)", 0, 72, 1)
+        MonthlyCharges = st.number_input("Monthly fee", min_value=0.0, value=20.0)
+        TotalCharges = st.number_input("Total cost", min_value=0.0, value=20.0)
 
     with col2:
         PhoneService = st.selectbox("خدمات تلفن", ["No", "Yes"])
@@ -277,5 +277,6 @@ elif menu == "آپلود":
         st.write("داده‌ها:", df_up.head())
 
         # predict batch اگر خواستی اضافه کن
+
 
 
