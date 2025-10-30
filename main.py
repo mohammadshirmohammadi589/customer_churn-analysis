@@ -192,7 +192,7 @@ if menu == "Forecast":
     PaperlessBilling = st.selectbox("Paperless billing", ["No", "Yes"])
     PaymentMethod = st.selectbox("Payment method", ["Bank transfer (automatic)", "Credit card (automatic)", "Electronic check", "Mailed check"])
 
-    if st.button("پیش‌بینی"):
+    if st.button("Forecast"):
         input_data = {
             "customerID": [f"ID-{np.random.randint(1000,9999)}"],
             "gender": [gender], "SeniorCitizen": [SeniorCitizen], "Partner": [Partner],
@@ -226,7 +226,7 @@ if menu == "Forecast":
                         est = model.named_estimators_.get(name)
                         if est and hasattr(est, 'feature_importances_'):
                             importances = est.feature_importances_
-                            st.write(f"از estimator {name} استفاده شد.")
+                            st.write(f"از estimator {name} Used.")
                             break
                 
                 if importances is not None:
@@ -241,7 +241,7 @@ if menu == "Forecast":
                             "Feature": feature_names,
                             "Importance": importances
                         }).sort_values("Importance", ascending=False).head(10)
-                        fig = px.bar(feat_imp, x="Importance", y="Feature", title="ویژگی‌های مهم")
+                        fig = px.bar(feat_imp, x="Importance", y="Feature", title="Important features")
                         st.plotly_chart(fig)
                     else:
                         st.warning("⚠️Feature mismatch.")
@@ -253,7 +253,7 @@ if menu == "Forecast":
             # Increment usage
             increment_usage(st.session_state.username)
             new_remaining = 3 - check_usage(st.session_state.username)
-            st.info(f"باقی‌مانده: {new_remaining}")
+            st.info(f"Remainder: {new_remaining}")
             if new_remaining <= 0:
                 st.warning("It was the last prediction. Exit...")
                 if st.button("Exit"):
@@ -263,20 +263,21 @@ if menu == "Forecast":
 # Other Sections
 elif menu == "About":
     st.title("About")
-    st.markdown("Forecasting the fall with Voting Classifier (GBC + LR + ABC). دقت: ~80% Recall Weighted.")
+    st.markdown("Forecasting the fall with Voting Classifier (GBC + LR + ABC). Accuracy: ~80% Recall Weighted.")
 
 elif menu == "Analyses":
     st.title("Analyses")
     st.info("Sample charts – add later.")
 
-elif menu == "آپلود":
-    st.title("آپلود")
-    uploaded_file = st.file_uploader("CSV آپلود کن", type="csv")
+elif menu == "Upload":
+    st.title("Upload")
+    uploaded_file = st.file_uploader("CSV Upload it.", type="csv")
     if uploaded_file:
         df_up = pd.read_csv(uploaded_file)
-        st.write("داده‌ها:", df_up.head())
+        st.write("Data:", df_up.head())
 
         # predict batch اگر خواستی اضافه کن
+
 
 
 
