@@ -178,19 +178,19 @@ if menu == "Forecast":
         TotalCharges = st.number_input("Total cost", min_value=0.0, value=20.0)
 
     with col2:
-        PhoneService = st.selectbox("خدمات تلفن", ["No", "Yes"])
-        MultipleLines = st.selectbox("چند خط", ["No phone service", "No", "Yes"])
-        InternetService = st.selectbox("خدمات اینترنت", ["DSL", "Fiber optic", "No"])
-        OnlineSecurity = st.selectbox("امنیت آنلاین", ["No internet service", "No", "Yes"])
-        OnlineBackup = st.selectbox("بک‌آپ آنلاین", ["No internet service", "No", "Yes"])
-        DeviceProtection = st.selectbox("حفاظت دستگاه", ["No internet service", "No", "Yes"])
-        TechSupport = st.selectbox("پشتیبانی فنی", ["No internet service", "No", "Yes"])
-        StreamingTV = st.selectbox("استریم TV", ["No internet service", "No", "Yes"])
-        StreamingMovies = st.selectbox("استریم فیلم", ["No internet service", "No", "Yes"])
+        PhoneService = st.selectbox("Telephone services", ["No", "Yes"])
+        MultipleLines = st.selectbox("How many lines?", ["No phone service", "No", "Yes"])
+        InternetService = st.selectbox("Internet services", ["DSL", "Fiber optic", "No"])
+        OnlineSecurity = st.selectbox("Online security", ["No internet service", "No", "Yes"])
+        OnlineBackup = st.selectbox("Online backup", ["No internet service", "No", "Yes"])
+        DeviceProtection = st.selectbox("Device protection", ["No internet service", "No", "Yes"])
+        TechSupport = st.selectbox("Technical support", ["No internet service", "No", "Yes"])
+        StreamingTV = st.selectbox("TV streaming", ["No internet service", "No", "Yes"])
+        StreamingMovies = st.selectbox("Movie streaming", ["No internet service", "No", "Yes"])
 
-    Contract = st.selectbox("قرارداد", ["Month-to-month", "One year", "Two year"])
-    PaperlessBilling = st.selectbox("صورت‌حساب بدون کاغذ", ["No", "Yes"])
-    PaymentMethod = st.selectbox("روش پرداخت", ["Bank transfer (automatic)", "Credit card (automatic)", "Electronic check", "Mailed check"])
+    Contract = st.selectbox("Contract", ["Month-to-month", "One year", "Two year"])
+    PaperlessBilling = st.selectbox("Paperless billing", ["No", "Yes"])
+    PaymentMethod = st.selectbox("Payment method", ["Bank transfer (automatic)", "Credit card (automatic)", "Electronic check", "Mailed check"])
 
     if st.button("پیش‌بینی"):
         input_data = {
@@ -209,13 +209,13 @@ if menu == "Forecast":
         
         pred, proba = predict(input_df, model, encoders)
         if pred is not None:
-            st.subheader("نتیجه پیش‌بینی")
+            st.subheader("Prediction result")
             churn_prob = proba[0] * 100
-            st.metric("احتمال ریزش", f"{churn_prob:.1f}%")
+            st.metric("Possibility of falling", f"{churn_prob:.1f}%")
             if pred[0] == 1:
-                st.error("🚨 ریزش می‌کند!")
+                st.error("🚨 There is customer churn.!")
             else:
-                st.success("✅ ریزش نمی‌کند!")
+                st.success("✅ has no customer churn!")
             
             # Feature Importance (اصلاح‌شده)
             try:
@@ -244,30 +244,30 @@ if menu == "Forecast":
                         fig = px.bar(feat_imp, x="Importance", y="Feature", title="ویژگی‌های مهم")
                         st.plotly_chart(fig)
                     else:
-                        st.warning("⚠️ عدم تطابق ویژگی‌ها.")
+                        st.warning("⚠️Feature mismatch.")
                 else:
-                    st.info("ℹ️ اهمیت ویژگی‌ها در دسترس نیست.")
+                    st.info("ℹ️ Importance of features is not available..")
             except Exception as e:
-                st.info(f"ℹ️ خطا در اهمیت: {e}")
+                st.info(f"ℹ️ Error in significance: {e}")
             
             # Increment usage
             increment_usage(st.session_state.username)
             new_remaining = 3 - check_usage(st.session_state.username)
             st.info(f"باقی‌مانده: {new_remaining}")
             if new_remaining <= 0:
-                st.warning("آخرین پیش‌بینی بود. خروج...")
-                if st.button("خروج"):
+                st.warning("It was the last prediction. Exit...")
+                if st.button("Exit"):
                     st.session_state.clear()
                     st.rerun()
 
 # Other Sections
-elif menu == "درباره":
-    st.title("درباره")
-    st.markdown("پیش‌بینی ریزش با Voting Classifier (GBC + LR + ABC). دقت: ~80% Recall Weighted.")
+elif menu == "About":
+    st.title("About")
+    st.markdown("Forecasting the fall with Voting Classifier (GBC + LR + ABC). دقت: ~80% Recall Weighted.")
 
-elif menu == "تحلیل‌ها":
-    st.title("تحلیل‌ها")
-    st.info("نمودارهای نمونه – بعداً اضافه کن.")
+elif menu == "Analyses":
+    st.title("Analyses")
+    st.info("Sample charts – add later.")
 
 elif menu == "آپلود":
     st.title("آپلود")
@@ -277,6 +277,7 @@ elif menu == "آپلود":
         st.write("داده‌ها:", df_up.head())
 
         # predict batch اگر خواستی اضافه کن
+
 
 
 
