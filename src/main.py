@@ -1,4 +1,3 @@
-
 import streamlit as st
 import joblib
 import numpy as np
@@ -14,8 +13,7 @@ warnings.filterwarnings('ignore')  # برای جلوگیری از warningهای 
 
 # 🔐 Credentials
 CREDENTIALS = {
-    'user1': 'password123',
-    'user3': 'securepass45133'
+    'Datavisionary': 'Datacode2024'
 }
 USERS_FILE = 'users_usage.json'
 
@@ -47,28 +45,28 @@ if 'authenticated' not in st.session_state:
     st.session_state.username = None
 
 if not st.session_state.authenticated:
-    st.title("🔐 ورود به سیستم پیش‌بینی ریزش مشتری")
-    username = st.text_input("نام کاربری:")
-    password = st.text_input("رمز عبور:", type="password")
+    st.title("🔐 Customer churn prediction login")
+    username = st.text_input("Username:")
+    password = st.text_input("Password:", type="password")
     
-    if st.button("ورود"):
+    if st.button("Login"):
         if username in CREDENTIALS and CREDENTIALS[username] == password:
             usage_count = check_usage(username)
             if usage_count >= 3:
-                st.error("❌ شما بیش از ۳ پیش‌بینی انجام داده‌اید. دسترسی مسدود است.")
+                st.error("❌ You have made more than 3 predictions. Access is blocked.")
                 st.stop()
             st.session_state.authenticated = True
             st.session_state.username = username
-            st.success("✅ ورود موفق!")
+            st.success("✅ Successful login!")
             st.rerun()
         else:
-            st.error("❌ اطلاعات ورود اشتباه است")
+            st.error("❌ The login information is incorrect.")
     st.stop()
 
 # Demo Limitations
 DEMO_VERSION = "true"
 if DEMO_VERSION == "true":
-    st.sidebar.warning("🔒 نسخه دمو: فقط ۳ پیش‌بینی مجاز برای هر کاربر.")
+    st.sidebar.warning("🔒 Demo version: Only 3 predictions allowed per user.")
 
 # Model & Encoders Loading (فقط current_dir برای Cloud)
 def load_artifacts():
@@ -85,11 +83,11 @@ def load_artifacts():
     if os.path.exists(model_path) and os.path.exists(encoders_path):
         model = joblib.load(model_path)
         encoders = joblib.load(encoders_path)
-        st.success("✅ مدل و encoders لود شد.")
+        st.success("✅ The model and encoders were loaded.")
         return model, encoders
     else:
-        st.error(f"❌ فایل‌ها پیدا نشد: مدل={os.path.exists(model_path)}, encoders={os.path.exists(encoders_path)}")
-        st.info("فایل‌های .pkl رو از نوت‌بوک دانلود و آپلود کن.")
+        st.error(f"❌ Files not found: Model={os.path.exists(model_path)}, encoders={os.path.exists(encoders_path)}")
+        st.info("Download and upload .pkl files from Notebook.")
         return None, None
 
 model, encoders = load_artifacts()
@@ -98,9 +96,9 @@ if model is None:
     st.stop()
 
 # Sidebar
-st.sidebar.title("📋 منو")
-menu = st.sidebar.radio("انتخاب:", ["پیش‌بینی", "درباره", "تحلیل‌ها", "آپلود"])
-if st.sidebar.button("خروج"):
+st.sidebar.title("📋 Menu")
+menu = st.sidebar.radio("Choice:", ["Forecast", "About", "Analyses", "Upload"])
+if st.sidebar.button("Exit"):
     st.session_state.clear()
     st.rerun()
 
@@ -155,46 +153,46 @@ def predict(input_df, model, encoders):
         return pred, proba
 
     except Exception as e:
-        st.error(f"❌ خطا در پیش‌بینی: {e}")
+        st.error(f"❌ Error in prediction: {e}")
         st.write(f"Debug: Input columns: {input_df.columns.tolist()}")
         return None, None
 
 # Prediction Section
-if menu == "پیش‌بینی":
-    st.title("🔍 پیش‌بینی ریزش مشتری")
+if menu == "Forecast":
+    st.title("🔍Customer churn prediction")
     usage_count = check_usage(st.session_state.username)
     remaining = 3 - usage_count
-    st.info(f"تعداد پیش‌بینی باقی‌مانده: {remaining}")
+    st.info(f"Number of remaining predictions: {remaining}")
     if remaining <= 0:
-        st.error("❌ حد مجاز تمام شده. با ادمین تماس بگیرید.")
+        st.error("❌ Limit exceeded. Contact admin.")
         st.stop()
 
     col1, col2 = st.columns(2)
     with col1:
-        gender = st.selectbox("جنسیت", ["Female", "Male"])
-        SeniorCitizen = st.selectbox("سالمند؟", [0, 1])
-        Partner = st.selectbox("شریک؟", ["No", "Yes"])
-        Dependents = st.selectbox("وابستگان؟", ["No", "Yes"])
-        tenure = st.slider("مدت اشتراک (ماه)", 0, 72, 1)
-        MonthlyCharges = st.number_input("هزینه ماهانه", min_value=0.0, value=20.0)
-        TotalCharges = st.number_input("هزینه کل", min_value=0.0, value=20.0)
+        gender = st.selectbox("Gender", ["Female", "Male"])
+        SeniorCitizen = st.selectbox("Elderly؟", [0, 1])
+        Partner = st.selectbox("Partner?", ["No", "Yes"])
+        Dependents = st.selectbox("Dependents?", ["No", "Yes"])
+        tenure = st.slider("Subscription period (months)", 0, 72, 1)
+        MonthlyCharges = st.number_input("Monthly fee", min_value=0.0, value=20.0)
+        TotalCharges = st.number_input("Total cost", min_value=0.0, value=20.0)
 
     with col2:
-        PhoneService = st.selectbox("خدمات تلفن", ["No", "Yes"])
-        MultipleLines = st.selectbox("چند خط", ["No phone service", "No", "Yes"])
-        InternetService = st.selectbox("خدمات اینترنت", ["DSL", "Fiber optic", "No"])
-        OnlineSecurity = st.selectbox("امنیت آنلاین", ["No internet service", "No", "Yes"])
-        OnlineBackup = st.selectbox("بک‌آپ آنلاین", ["No internet service", "No", "Yes"])
-        DeviceProtection = st.selectbox("حفاظت دستگاه", ["No internet service", "No", "Yes"])
-        TechSupport = st.selectbox("پشتیبانی فنی", ["No internet service", "No", "Yes"])
-        StreamingTV = st.selectbox("استریم TV", ["No internet service", "No", "Yes"])
-        StreamingMovies = st.selectbox("استریم فیلم", ["No internet service", "No", "Yes"])
+        PhoneService = st.selectbox("Telephone services", ["No", "Yes"])
+        MultipleLines = st.selectbox("How many lines?", ["No phone service", "No", "Yes"])
+        InternetService = st.selectbox("Internet services", ["DSL", "Fiber optic", "No"])
+        OnlineSecurity = st.selectbox("Online security", ["No internet service", "No", "Yes"])
+        OnlineBackup = st.selectbox("Online backup", ["No internet service", "No", "Yes"])
+        DeviceProtection = st.selectbox("Device protection", ["No internet service", "No", "Yes"])
+        TechSupport = st.selectbox("Technical support", ["No internet service", "No", "Yes"])
+        StreamingTV = st.selectbox("TV streaming", ["No internet service", "No", "Yes"])
+        StreamingMovies = st.selectbox("Movie streaming", ["No internet service", "No", "Yes"])
 
-    Contract = st.selectbox("قرارداد", ["Month-to-month", "One year", "Two year"])
-    PaperlessBilling = st.selectbox("صورت‌حساب بدون کاغذ", ["No", "Yes"])
-    PaymentMethod = st.selectbox("روش پرداخت", ["Bank transfer (automatic)", "Credit card (automatic)", "Electronic check", "Mailed check"])
+    Contract = st.selectbox("Contract", ["Month-to-month", "One year", "Two year"])
+    PaperlessBilling = st.selectbox("Paperless billing", ["No", "Yes"])
+    PaymentMethod = st.selectbox("Payment method", ["Bank transfer (automatic)", "Credit card (automatic)", "Electronic check", "Mailed check"])
 
-    if st.button("پیش‌بینی"):
+    if st.button("Forecast"):
         input_data = {
             "customerID": [f"ID-{np.random.randint(1000,9999)}"],
             "gender": [gender], "SeniorCitizen": [SeniorCitizen], "Partner": [Partner],
@@ -211,13 +209,13 @@ if menu == "پیش‌بینی":
         
         pred, proba = predict(input_df, model, encoders)
         if pred is not None:
-            st.subheader("نتیجه پیش‌بینی")
+            st.subheader("Prediction result")
             churn_prob = proba[0] * 100
-            st.metric("احتمال ریزش", f"{churn_prob:.1f}%")
+            st.metric("Possibility of falling", f"{churn_prob:.1f}%")
             if pred[0] == 1:
-                st.error("🚨 ریزش می‌کند!")
+                st.error("🚨 There is customer churn.!")
             else:
-                st.success("✅ ریزش نمی‌کند!")
+                st.success("✅ has no customer churn!")
             
             # Feature Importance (اصلاح‌شده)
             try:
@@ -228,7 +226,7 @@ if menu == "پیش‌بینی":
                         est = model.named_estimators_.get(name)
                         if est and hasattr(est, 'feature_importances_'):
                             importances = est.feature_importances_
-                            st.write(f"از estimator {name} استفاده شد.")
+                            st.write(f"از estimator {name} Used.")
                             break
                 
                 if importances is not None:
@@ -243,38 +241,43 @@ if menu == "پیش‌بینی":
                             "Feature": feature_names,
                             "Importance": importances
                         }).sort_values("Importance", ascending=False).head(10)
-                        fig = px.bar(feat_imp, x="Importance", y="Feature", title="ویژگی‌های مهم")
+                        fig = px.bar(feat_imp, x="Importance", y="Feature", title="Important features")
                         st.plotly_chart(fig)
                     else:
-                        st.warning("⚠️ عدم تطابق ویژگی‌ها.")
+                        st.warning("⚠️Feature mismatch.")
                 else:
-                    st.info("ℹ️ اهمیت ویژگی‌ها در دسترس نیست.")
+                    st.info("ℹ️ Importance of features is not available..")
             except Exception as e:
-                st.info(f"ℹ️ خطا در اهمیت: {e}")
+                st.info(f"ℹ️ Error in significance: {e}")
             
             # Increment usage
             increment_usage(st.session_state.username)
             new_remaining = 3 - check_usage(st.session_state.username)
-            st.info(f"باقی‌مانده: {new_remaining}")
+            st.info(f"Remainder: {new_remaining}")
             if new_remaining <= 0:
-                st.warning("آخرین پیش‌بینی بود. خروج...")
-                if st.button("خروج"):
+                st.warning("It was the last prediction. Exit...")
+                if st.button("Exit"):
                     st.session_state.clear()
                     st.rerun()
 
 # Other Sections
-elif menu == "درباره":
-    st.title("درباره")
-    st.markdown("پیش‌بینی ریزش با Voting Classifier (GBC + LR + ABC). دقت: ~80% Recall Weighted.")
+elif menu == "About":
+    st.title("About")
+    st.markdown("Forecasting the fall with Voting Classifier (GBC + LR + ABC). Accuracy: ~80% Recall Weighted.")
 
-elif menu == "تحلیل‌ها":
-    st.title("تحلیل‌ها")
-    st.info("نمودارهای نمونه – بعداً اضافه کن.")
+elif menu == "Analyses":
+    st.title("Analyses")
+    st.info("Sample charts – add later.")
 
-elif menu == "آپلود":
-    st.title("آپلود")
-    uploaded_file = st.file_uploader("CSV آپلود کن", type="csv")
+elif menu == "Upload":
+    st.title("Upload")
+    uploaded_file = st.file_uploader("CSV Upload it.", type="csv")
     if uploaded_file:
         df_up = pd.read_csv(uploaded_file)
-        st.write("داده‌ها:", df_up.head())
+        st.write("Data:", df_up.head())
+
         # predict batch اگر خواستی اضافه کن
+
+
+
+
