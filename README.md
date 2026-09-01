@@ -18,7 +18,6 @@ The data used for this project is publicly available on github: [https://github.
 8. Conclusion and Recommendations
 
 9. ## Project Overview
-
 ### Business Context
 Customer churn poses a significant challenge to the e-commerce industry, where customer acquisition is costly, and competition is intense. Retaining existing customers is often more profitable than acquiring new ones. The goal of this project is to predict which customers are likely to churn and understand the factors contributing to churn, helping the company make proactive retention efforts.
 
