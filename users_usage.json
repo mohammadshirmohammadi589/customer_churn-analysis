@@ -1,5 +1,18 @@
+<<<<<<< HEAD
 {
     "user3": {
         "usage_count": 1
     }
+=======
+{
+    "user1": {
+        "usage_count": 3
+    },
+    "user2": {
+        "usage_count": 3
+    },
+    "user3": {
+        "usage_count": 3
+    }
+>>>>>>> 499d401 (Add my streamlit app)
 }
