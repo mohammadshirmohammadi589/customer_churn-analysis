@@ -14,9 +14,7 @@ st.set_page_config(page_title="Customer Churn", layout="centered")
 # 🔐 LOGIN SYSTEM
 # =============================
 
-CREDENTIALS = {
-    "Datavisionary": "Datacode2024"
-}
+CREDENTIALS = st.secrets.get("credentials", {})
 
 USERS_FILE = "users_usage.json"
 
