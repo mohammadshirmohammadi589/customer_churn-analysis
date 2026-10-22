@@ -12,10 +12,7 @@ import warnings
 warnings.filterwarnings('ignore')  # برای جلوگیری از warningهای sklearn
 
 # 🔐 Credentials
-CREDENTIALS = {
-    'user1': 'password123',
-    'user3': 'securepass45133'
-}
+CREDENTIALS = st.secrets.get("credentials", {})
 USERS_FILE = 'users_usage.json'
 
 # تابع ذخیره/لود users
