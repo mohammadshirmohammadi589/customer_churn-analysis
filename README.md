@@ -12,7 +12,7 @@ The data used for this project is publicly available on github: [https://github.
 2. Data Source
 3. Features
 4. Exploratory Data Analysis (EDA)
-5. Preprocessing and Feature Engineering
+5. Feature Engineering
 6. Modeling
 7. Results and Evaluation
 8. Conclusion and Recommendations
